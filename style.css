@@ -97,6 +97,7 @@ header{
     text-align: center;
     width: 100%;
     max-width: 520px;
+    margin-bottom: 20px;
 }
 
 .search-section h1{
@@ -104,9 +105,7 @@ header{
     font-weight: 700;
     margin-bottom: 28px;
     letter-spacing: -0.8px;
-    background: linear-gradient(180deg, #FFFFFF 0%, #A5A5C7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    opacity: 0.8;
 }
 
 .search-bar-container{
@@ -181,3 +180,196 @@ header{
     transform: scale(0.98);
 }
 
+.dashborad-grid{
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 24px;
+}
+
+.left-pannel{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.hero-weather-card{
+    background: var(--hero-gradient);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 180px;
+}
+
+.hero-meta .city-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.hero-meta .current-date{
+    opacity: 0.6;
+}
+
+.hero-temp-box{
+    display: flex;
+    align-items: center;
+}
+
+.hero-temp-box img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.hero-temp-box .hero-degree {
+    font-size: 4rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.metrics-grid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+}
+
+.metric-card{
+    display: flex;
+    flex-direction: column;
+    background: var(--card-dark);
+    padding: 20px 16px;
+    border-radius: 14px;
+    gap: 12px;
+}
+
+.metric-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.metric-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.daily-forecast-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.daily-forecast-row{
+    display: flex;
+    gap: 10px;
+}
+
+.day-card{
+    flex: 1;
+    background: var(--card-dark);
+    border-radius: 14px;
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.day-name {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.day-card img{
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.day-temps {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.day-temps .max-temp{
+    opacity: 0.7;
+}
+
+.day-temps .min-temp{
+    color: var(--text-muted);
+}
+
+.right-panel {
+    background-color: var(--card-dark);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hourly-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hourly-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.day-dropdown-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border: none;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.hourly-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hourly-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.02);
+    padding: 14px 16px;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.hourly-item:hover {
+    background-color: var(--card-dark-hover);
+}
+
+.hour-time {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.hour-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.hour-temp {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
