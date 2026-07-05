@@ -12,14 +12,14 @@
     --transition-smooth: all 0.25s ease-in-out;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-body{
+body {
     background-color: var(--bg-dark);
     min-height: 100vh;
     display: flex;
@@ -29,27 +29,28 @@ body{
     color: var(--text-main);
 }
 
-.dashboard-wrap{
+.dashboard-wrap {
     width: 100%;
+    max-width: 1200px; /* Added constraints so it doesn't overstretch on ultrawides */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: 40px; /* Tightened from 60px for a more cohesive UI layout */
 }
 
-header{
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.logo{
+.logo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.logo img{
+.logo img {
     width: 32px;
     height: 32px;
     object-fit: contain;
@@ -81,47 +82,46 @@ header{
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.units-btn img{
+.units-btn img {
     opacity: 0.7;
 }
 
-.main-content{
+.main-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
+    gap: 32px;
 }
 
-.search-section{
+.search-section {
     text-align: center;
     width: 100%;
     max-width: 520px;
-    margin-bottom: 20px;
+    margin: 0 auto;
 }
 
-.search-section h1{
+.search-section h1 {
     font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
     letter-spacing: -0.8px;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
-.search-bar-container{
+.search-bar-container {
     display: flex;
     justify-content: center;
-    align-items: stretch; /* Forces children to stay uniform height */
+    align-items: stretch;
     gap: 12px;
     width: 100%;
 }
 
-.input-wrapper{
+.input-wrapper {
     position: relative;
     flex: 1;
 }
 
-.search-icon{
+.search-icon {
     position: absolute;
     left: 16px;
     top: 50%;
@@ -131,7 +131,7 @@ header{
     transition: var(--transition-smooth);
 }
 
-.input-wrapper input{
+.input-wrapper input {
     width: 100%;
     height: 52px;
     padding: 0 16px 0 48px;
@@ -158,7 +158,7 @@ header{
     color: var(--text-muted);
 }
 
-.search-submit-btn{
+.search-submit-btn {
     background-color: var(--accent-blue);
     color: white;
     border: none;
@@ -180,19 +180,20 @@ header{
     transform: scale(0.98);
 }
 
-.dashborad-grid{
+.dashboard-grid {
     display: grid;
     grid-template-columns: 1.8fr 1fr;
     gap: 24px;
+    width: 100%;
 }
 
-.left-pannel{
+.left-panel {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-.hero-weather-card{
+.hero-weather-card {
     background: var(--hero-gradient);
     border-radius: 20px;
     padding: 40px;
@@ -208,16 +209,16 @@ header{
     margin-bottom: 6px;
 }
 
-.hero-meta .current-date{
+.hero-meta .current-date {
     opacity: 0.6;
 }
 
-.hero-temp-box{
+.hero-temp-box {
     display: flex;
     align-items: center;
 }
 
-.hero-temp-box img{
+.hero-temp-box img {
     width: 100px;
     height: 100px;
     object-fit: contain;
@@ -229,13 +230,13 @@ header{
     line-height: 1;
 }
 
-.metrics-grid{
+.metrics-grid {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 14px;
 }
 
-.metric-card{
+.metric-card {
     display: flex;
     flex-direction: column;
     background: var(--card-dark);
@@ -262,13 +263,15 @@ header{
     margin-bottom: 16px;
 }
 
-.daily-forecast-row{
+.daily-forecast-row {
     display: flex;
     gap: 10px;
+    overflow-x: auto; /* Lets it scroll cleanly if screens get tight */
 }
 
-.day-card{
+.day-card {
     flex: 1;
+    min-width: 70px;
     background: var(--card-dark);
     border-radius: 14px;
     padding: 16px 10px;
@@ -284,9 +287,9 @@ header{
     font-weight: 500;
 }
 
-.day-card img{
-    width: 28px;
-    height: 28px;
+.day-card img {
+    width: 46px;
+    height: 46px;
     object-fit: contain;
 }
 
@@ -297,11 +300,11 @@ header{
     font-weight: 600;
 }
 
-.day-temps .max-temp{
+.day-temps .max-temp {
     opacity: 0.7;
 }
 
-.day-temps .min-temp{
+.day-temps .min-temp {
     color: var(--text-muted);
 }
 
@@ -328,11 +331,14 @@ header{
 .day-dropdown-btn {
     background: rgba(255, 255, 255, 0.07);
     border: none;
-    color: var(--text-muted);
-    padding: 6px 12px;
+    color: var(--text-main);
+    padding: 8px 14px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .hourly-list {
@@ -346,9 +352,9 @@ header{
     justify-content: space-between;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.02);
-    padding: 14px 16px;
+    padding: 0 16px;
     border-radius: 12px;
-    transition: background 0.2s;
+    transition: var(--transition-smooth);
 }
 
 .hourly-item:hover {
@@ -364,12 +370,30 @@ header{
 }
 
 .hour-img {
-    width: 22px;
-    height: 22px;
+    width: 46px;
+    height: 46px;
     object-fit: contain;
 }
 
 .hour-temp {
     font-size: 0.9rem;
     font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stacks panels vertically */
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr); /* Changes grid to 2x2 instead of 4x1 */
+    }
+
+    .daily-forecast-row {
+        flex-wrap: wrap;
+    }
+    .day-card{
+        flex: calc(33.33% - 10px);
+        min-width: 80px;
+    }
 }
