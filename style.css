@@ -25,7 +25,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 20px;
+    padding: 32px 16px;
     color: var(--text-main);
 }
 
@@ -204,7 +204,8 @@ header {
 }
 
 .hero-meta .city-name {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    letter-spacing: -0.03em;
     font-weight: 600;
     margin-bottom: 6px;
 }
@@ -352,7 +353,7 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.02);
-    padding: 0 16px;
+    padding: 14px 16px;
     border-radius: 12px;
     transition: var(--transition-smooth);
 }
@@ -392,8 +393,58 @@ header {
     .daily-forecast-row {
         flex-wrap: wrap;
     }
+    
     .day-card{
         flex: calc(33.33% - 10px);
         min-width: 80px;
     }
+    body{
+        padding:20px 14px;
+    }
+    .dashboard-wrap{
+        gap:24px;
+    }
+    .hero-weather-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+        padding:28px;
+    }
+    .hero-temp-box{
+        width:100%;
+        justify-content:space-between;
+    }
+}
+
+.metric-card{
+    transition:.25s;
+}
+
+.metric-card:hover{
+transform:translateY(-4px);
+background:#181838;
+}
+
+.hero-weather-card{
+box-shadow: 0 5px 5px rgba(25,55,200,.28);
+}
+
+.metric-card,
+.right-panel,
+.day-card{
+border:1px solid rgba(255,255,255,.05);
+}
+
+.units-btn:hover,
+.search-submit-btn:hover,
+.day-dropdown-btn:hover{
+transform:translateY(-2px);
+}
+
+.metric-card,
+.right-panel,
+.day-card{
+
+backdrop-filter:blur(12px);
+
 }
