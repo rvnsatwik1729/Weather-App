@@ -448,3 +448,7 @@ transform:translateY(-2px);
 backdrop-filter:blur(12px);
 
 }
+
+.hidden{
+    display: none;
+}

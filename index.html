@@ -17,7 +17,12 @@
     <div class="dashboard-wrap">
       <header>
         <div class="logo">
-          <img src="images/logo.png" alt="Weather Flex Logo" width="32" height="32" />
+          <img
+            src="images/logo.png"
+            alt="Weather Flex Logo"
+            width="32"
+            height="32"
+          />
           <h2>Weather Flex</h2>
         </div>
         <button class="units-btn">
@@ -28,11 +33,18 @@
       </header>
 
       <main class="main-content">
+
         <section class="search-section">
           <h1>How's the sky looking today?</h1>
           <div class="search-bar-container">
             <div class="input-wrapper">
-              <img src="images/icon-search.svg" alt="" class="search-icon" width="18" height="18" />
+              <img
+                src="images/icon-search.svg"
+                alt=""
+                class="search-icon"
+                width="18"
+                height="18"
+              />
               <input
                 type="text"
                 placeholder="Search for a place..."
@@ -43,163 +55,277 @@
           </div>
         </section>
 
-        <div class="dashboard-grid">
-          <div class="left-panel">
-            <div class="hero-weather-card">
-              <div class="hero-meta">
-                <h2 class="city-name">Berlin, Germany</h2>
-                <p class="current-date">Tuesday, Aug 5, 2025</p>
+        <div class="weather-content hidden">
+          <div class="dashboard-grid">
+            <div class="left-panel">
+              <div class="hero-weather-card">
+                <div class="hero-meta">
+                  <h2 class="city-name">Berlin, Germany</h2>
+                  <p class="current-date">Tuesday, Aug 5, 2025</p>
+                </div>
+                <div class="hero-temp-box">
+                  <img
+                    src="images/icon-sunny.webp"
+                    alt="Sunny"
+                    width="100"
+                    height="100"
+                  />
+                  <span class="hero-degree">20°</span>
+                </div>
               </div>
-              <div class="hero-temp-box">
-                <img src="images/icon-sunny.webp" alt="Sunny" width="100" height="100" />
-                <span class="hero-degree">20°</span>
+
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <span class="metric-label">Feels Like</span>
+                  <span class="metric-value">18°</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">Humidity</span>
+                  <span class="metric-value">46%</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">Wind</span>
+                  <span class="metric-value">14 km/h</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">Precipitation</span>
+                  <span class="metric-value">0 mm</span>
+                </div>
+              </div>
+
+              <div class="daily-forecast-section">
+                <h3>Daily forecast</h3>
+                <div class="daily-forecast-row" id="daily-forecast">
+                  <div class="day-card">
+                    <span class="day-name">Tue</span>
+                    <img
+                      src="images/icon-rain.webp"
+                      alt="Rain"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">20°</span
+                      ><span class="min-temp">14°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Wed</span>
+                    <img
+                      src="images/icon-drizzle.webp"
+                      alt="Drizzle"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">21°</span
+                      ><span class="min-temp">15°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Thu</span>
+                    <img
+                      src="images/icon-sunny.webp"
+                      alt="Sunny"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">24°</span
+                      ><span class="min-temp">14°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Fri</span>
+                    <img
+                      src="images/icon-partly-cloudy.webp"
+                      alt="Partly Cloudy"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">25°</span
+                      ><span class="min-temp">13°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Sat</span>
+                    <img
+                      src="images/icon-storm.webp"
+                      alt="Storm"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">21°</span
+                      ><span class="min-temp">15°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Sun</span>
+                    <img
+                      src="images/icon-snow.webp"
+                      alt="Snow"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">25°</span
+                      ><span class="min-temp">16°</span>
+                    </span>
+                  </div>
+                  <div class="day-card">
+                    <span class="day-name">Mon</span>
+                    <img
+                      src="images/icon-fog.webp"
+                      alt="Fog"
+                      width="28"
+                      height="28"
+                    />
+                    <span class="day-temps">
+                      <span class="max-temp">24°</span
+                      ><span class="min-temp">15°</span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="metrics-grid">
-              <div class="metric-card">
-                <span class="metric-label">Feels Like</span>
-                <span class="metric-value">18°</span>
+            <div class="right-panel">
+              <div class="hourly-header">
+                <h3>Hourly forecast</h3>
+                <button class="day-dropdown-btn">
+                  Tuesday
+                  <img
+                    src="images/icon-dropdown.svg"
+                    alt=""
+                    width="10"
+                    height="10"
+                  />
+                </button>
               </div>
-              <div class="metric-card">
-                <span class="metric-label">Humidity</span>
-                <span class="metric-value">46%</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Wind</span>
-                <span class="metric-value">14 km/h</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Precipitation</span>
-                <span class="metric-value">0 mm</span>
-              </div>
-            </div>
 
-            <div class="daily-forecast-section">
-              <h3>Daily forecast</h3>
-              <div class="daily-forecast-row" id="daily-forecast">
-                <div class="day-card">
-                  <span class="day-name">Tue</span>
-                  <img src="images/icon-rain.webp" alt="Rain" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">20°</span><span class="min-temp">14°</span>
-                  </span>
+              <div class="hourly-list">
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-overcast.webp"
+                      alt="Cloudy"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    3 PM
+                  </div>
+                  <span class="hour-temp">20°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Wed</span>
-                  <img src="images/icon-drizzle.webp" alt="Drizzle" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">21°</span><span class="min-temp">15°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-partly-cloudy.webp"
+                      alt="Partly Cloudy"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    4 PM
+                  </div>
+                  <span class="hour-temp">20°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Thu</span>
-                  <img src="images/icon-sunny.webp" alt="Sunny" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">24°</span><span class="min-temp">14°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-sunny.webp"
+                      alt="Sunny"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    5 PM
+                  </div>
+                  <span class="hour-temp">20°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Fri</span>
-                  <img src="images/icon-partly-cloudy.webp" alt="Partly Cloudy" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">25°</span><span class="min-temp">13°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-overcast.webp"
+                      alt="Cloudy"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    6 PM
+                  </div>
+                  <span class="hour-temp">19°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Sat</span>
-                  <img src="images/icon-storm.webp" alt="Storm" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">21°</span><span class="min-temp">15°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-rain.webp"
+                      alt="Rain"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    7 PM
+                  </div>
+                  <span class="hour-temp">18°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Sun</span>
-                  <img src="images/icon-snow.webp" alt="Snow" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">25°</span><span class="min-temp">16°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-fog.webp"
+                      alt="Fog"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    8 PM
+                  </div>
+                  <span class="hour-temp">18°</span>
                 </div>
-                <div class="day-card">
-                  <span class="day-name">Mon</span>
-                  <img src="images/icon-fog.webp" alt="Fog" width="28" height="28" />
-                  <span class="day-temps">
-                    <span class="max-temp">24°</span><span class="min-temp">15°</span>
-                  </span>
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-rain.webp"
+                      alt="Rain"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    9 PM
+                  </div>
+                  <span class="hour-temp">17°</span>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="right-panel">
-            <div class="hourly-header">
-              <h3>Hourly forecast</h3>
-              <button class="day-dropdown-btn">Tuesday 
-                <img src="images/icon-dropdown.svg" alt="" width="10" height="10" />
-              </button>
-            </div>
-
-            <div class="hourly-list">
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-overcast.webp" alt="Cloudy" class="hour-img" width="22" height="22" />
-                  3 PM
+                <div class="hourly-item">
+                  <div class="hour-time">
+                    <img
+                      src="images/icon-overcast.webp"
+                      alt="Cloudy"
+                      class="hour-img"
+                      width="22"
+                      height="22"
+                    />
+                    10 PM
+                  </div>
+                  <span class="hour-temp">17°</span>
                 </div>
-                <span class="hour-temp">20°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-partly-cloudy.webp" alt="Partly Cloudy" class="hour-img" width="22" height="22" />
-                  4 PM
-                </div>
-                <span class="hour-temp">20°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-sunny.webp" alt="Sunny" class="hour-img" width="22" height="22" />
-                  5 PM
-                </div>
-                <span class="hour-temp">20°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-overcast.webp" alt="Cloudy" class="hour-img" width="22" height="22" />
-                  6 PM
-                </div>
-                <span class="hour-temp">19°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-rain.webp" alt="Rain" class="hour-img" width="22" height="22" />
-                  7 PM
-                </div>
-                <span class="hour-temp">18°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-fog.webp" alt="Fog" class="hour-img" width="22" height="22" />
-                  8 PM
-                </div>
-                <span class="hour-temp">18°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-rain.webp" alt="Rain" class="hour-img" width="22" height="22" />
-                  9 PM
-                </div>
-                <span class="hour-temp">17°</span>
-              </div>
-              <div class="hourly-item">
-                <div class="hour-time">
-                  <img src="images/icon-overcast.webp" alt="Cloudy" class="hour-img" width="22" height="22" />
-                  10 PM
-                </div>
-                <span class="hour-temp">17°</span>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="empty-state">
+          <h2>Search for a city to see the weather</h2>
+        </div>
+
+        <div class="error-message hidden">
+          
+        </div>
+
       </main>
     </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
