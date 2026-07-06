@@ -21,6 +21,10 @@ const dailyForecast = document.querySelector(".daily-forecast-row");
 const API_KEY = "c7e67f5fa6b67bccb1be809e832dc9c5";
 
 const weatherIcons = {
+        Default : {
+            src : "images/icon-overcast.webp",
+            alt : "Weather"
+        },
         Clear : {
             src : "images/icon-sunny.webp",
             alt : "Clear"
@@ -77,9 +81,57 @@ function showError(message){
 
 showEmptyState();
 
+function updateHourlyForecast(hourlyData) {
+
+    hourlyList.innerHTML = "";
+
+    for (let i = 0; i < 8; i++) {
+
+        const forecast = hourlyData[i];
+
+        const weatherType = forecast.weather[0].main;
+
+        const icon = weatherIcons[weatherType] || weatherIcons.Default;
+
+        const time = new Date(forecast.dt_txt).toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        });
+ 
+        const temp = Math.round(forecast.main.temp);
+
+        const hourlyItem = document.createElement("div");
+        hourlyItem.classList.add("hourly-item");
+
+        const hourTime = document.createElement("div");
+        hourTime.classList.add("hour-time");
+
+        const img = document.createElement("img");
+        img.classList.add("hour-img");
+        img.src = icon.src;
+        img.alt = icon.alt;
+
+        const timeText = document.createElement("span");
+        timeText.textContent = time;
+
+        const hourTemp = document.createElement("span");
+        hourTemp.classList.add("hour-temp");
+        hourTemp.textContent = `${temp}°`;
+
+        hourTime.appendChild(img);
+        hourTime.appendChild(timeText);
+
+        hourlyItem.appendChild(hourTime);
+        hourlyItem.appendChild(hourTemp);
+
+        hourlyList.appendChild(hourlyItem);
+    }
+
+}
 
 async function displayWeather(city){
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
     
     try {
         searchBtn.disabled = true;
@@ -93,28 +145,26 @@ async function displayWeather(city){
             return;
         }
         const data = await response.json();
-            showWeather();
-        
+        console.log(data);
+        showWeather();
 
         inputValue.value = "";
-        console.log(data);
 
 
-        const cityNameValue = data.name;
-        const temp = Math.round(data.main.temp);
-        const feelsLike = Math.round(data.main.feels_like);
-        const humidity = data.main.humidity;
-        const wind = data.wind.speed;
-        const weatherType = data.weather[0].main;
-        const icon = weatherIcons[weatherType] || {
-                    src: "images/icon-overcast.webp",
-                    alt: "Weather"
-                };
+        const current = data.list[0];
 
-        if(icon){
-            weatherIcon.src = icon.src;
-            weatherIcon.alt = icon.alt;
-        }
+        const cityNameValue = data.city.name;
+        const temp = Math.round(current.main.temp);
+        const feelsLike = Math.round(current.main.feels_like);
+        const humidity = current.main.humidity;
+        const wind = current.wind.speed;
+        const weatherType = current.weather[0].main;
+
+        const icon = weatherIcons[weatherType] || weatherIcons.Default;
+
+        weatherIcon.src = icon.src;
+        weatherIcon.alt = icon.alt;
+
 
         cityName.textContent = cityNameValue;
         currentDate.textContent = Date.now();
@@ -122,6 +172,8 @@ async function displayWeather(city){
         metricValues[0].textContent = `${feelsLike}°`;
         metricValues[1].textContent = `${humidity}%`;
         metricValues[2].textContent = `${wind} km/h`;
+        
+        updateHourlyForecast(data.list);
 
     } catch (error) {
         console.log(error);
