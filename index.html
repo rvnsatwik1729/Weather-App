@@ -25,11 +25,24 @@
           />
           <h2>Weather Flex</h2>
         </div>
-        <button class="units-btn">
-          <img src="images/icon-units.svg" alt="" width="16" height="16" />
-          <span>units</span>
-          <img src="images/icon-dropdown.svg" alt="" width="10" height="10" />
-        </button>
+        <div class="unit-selector">
+
+          <button class="units-btn">
+            <img src="images/icon-units.svg" alt="" width="16" height="16" />
+            <span>units</span>
+            <img src="images/icon-dropdown.svg" alt="" class="arrow" width="10" height="10" />
+          </button>
+
+          <div class="units-menu hidden">
+          <button class="unit-option active" data-unit= "metric">
+            Celsius(°C)
+          </button>
+          <button class="unit-option" data-unit="imperial">
+            Faranheit(F)
+          </button>
+        </div>
+
+        </div>
       </header>
 
       <main class="main-content">

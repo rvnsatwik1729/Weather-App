@@ -18,7 +18,14 @@ const hourlyList = document.querySelector(".hourly-list");
 
 const dailyForecast = document.querySelector(".daily-forecast-row");
 
+const unitsBtn = document.querySelector(".units-btn");
+const unitsMenu = document.querySelector(".units-menu");
+const unitOptions = document.querySelectorAll(".unit-option");
+
 const API_KEY = "c7e67f5fa6b67bccb1be809e832dc9c5";
+
+let currentWeatherData = null;
+let currentUnit = "metric";
 
 const weatherIcons = {
         Default : {
@@ -79,13 +86,126 @@ function showError(message){
     errorMessage.textContent = message;
 }
 
-showEmptyState();
+function setLoading(isLoading){
+    searchBtn.disabled = isLoading;
+    searchBtn.textContent = isLoading ? "Searching..." : "Search";
+    inputValue.readOnly = isLoading;
+    document.body.style.cursor = isLoading ? "wait" : "default";
+}
+
+function convertTemperature(temp){
+    if(currentUnit === "metric"){
+        return `${Math.round(temp)}°C`;
+    }
+
+    return `${Math.round((temp * 9/5) + 32)}F`;
+}
+
+function convertWind(speed){
+    if(currentUnit === "metric"){
+        return `${Math.round(speed*3.6)} km/h`;
+    }
+
+    return `${Math.round(speed*2.237)} mph`;
+}
+
+function renderWeather(data){
+    const current = data.list[0];
+
+        const cityNameValue = data.city.name;
+        const temp = current.main.temp;
+        const feelsLike = current.main.feels_like;
+        const humidity = current.main.humidity;
+        const wind = current.wind.speed;
+        const weatherType = current.weather[0].main;
+
+        const icon = weatherIcons[weatherType] || weatherIcons.Default;
+
+        weatherIcon.src = icon.src;
+        weatherIcon.alt = icon.alt;
+
+
+        cityName.textContent = cityNameValue;
+
+        const todayDate = new Date(current.dt_txt);
+        const formattedDate = todayDate.toLocaleDateString("en-US",{
+            weekday : "long",
+            month   : "short",
+            day     : "numeric",
+            year    : "numeric"
+        });
+        currentDate.textContent = formattedDate;
+
+        heroDegree.textContent = `${convertTemperature(temp)}`;
+        metricValues[0].textContent = `${convertTemperature(feelsLike)}`;
+        metricValues[1].textContent = `${humidity}%`;
+        metricValues[2].textContent = `${convertWind(wind)}`;
+        
+        updateHourlyForecast(data.list);
+        updateDailyForecast(data.list);
+
+}
+
+function getCurrentLocation(){
+    if(!navigator.geolocation){
+        showError("Geolocation is not supported");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) =>{
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            displayWeatherByLocation(lat,lon);
+        },
+        ()=>{
+            showError("Location permission denied");
+        }
+    );
+}
+
+
+async function displayWeatherByLocation(lat, lon){
+    
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+    
+    try{
+        
+        setLoading(true);
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        currentWeatherData = data;
+
+        if(Number(data.cod) !== 200){
+            showError("city not found. Please check your spelling.");
+            return;
+        }
+
+        showWeather();
+        inputValue.value = "";
+        renderWeather(data);
+
+    }
+
+    catch(error){
+        console.log(error);
+        showError("Network Error");
+    }
+
+    finally{
+        setLoading(false);
+    }
+
+}
 
 function updateHourlyForecast(hourlyData) {
 
     hourlyList.innerHTML = "";
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < Math.min(8, hourlyData.length); i++) {
 
         const forecast = hourlyData[i];
 
@@ -99,7 +219,7 @@ function updateHourlyForecast(hourlyData) {
             hour12: true
         });
  
-        const temp = Math.round(forecast.main.temp);
+        const temp = forecast.main.temp;
 
         const hourlyItem = document.createElement("div");
         hourlyItem.classList.add("hourly-item");
@@ -117,7 +237,7 @@ function updateHourlyForecast(hourlyData) {
 
         const hourTemp = document.createElement("span");
         hourTemp.classList.add("hour-temp");
-        hourTemp.textContent = `${temp}°`;
+        hourTemp.textContent = `${convertTemperature(temp)}`;
 
         hourTime.appendChild(img);
         hourTime.appendChild(timeText);
@@ -175,8 +295,8 @@ function updateDailyForecast(forecastData) {
             weekday: "short"
         });
 
-        const maxTemp = Math.round(dayData.max);
-        const minTemp = Math.round(dayData.min);
+        const maxTemp = dayData.max;
+        const minTemp = dayData.min;
 
         const icon = weatherIcons[dayData.weather] || weatherIcons.Default;
 
@@ -196,11 +316,11 @@ function updateDailyForecast(forecastData) {
 
         const tempMax = document.createElement("span");
         tempMax.classList.add("max-temp");
-        tempMax.textContent = `${maxTemp}°`;
+        tempMax.textContent = `${convertTemperature(maxTemp)}`;
 
         const tempMin = document.createElement("span");
         tempMin.classList.add("min-temp");
-        tempMin.textContent = `${minTemp}°`;
+        tempMin.textContent = `${convertTemperature(minTemp)}`;
 
         dayTemps.appendChild(tempMax);
         dayTemps.appendChild(tempMin);
@@ -217,69 +337,37 @@ async function displayWeather(city){
     const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
     
     try {
-        searchBtn.disabled = true;
-        searchBtn.textContent = "Searching...";
-        inputValue.readOnly = true;
+        setLoading(true);
 
         const response = await fetch(url);
+        const data = await response.json();
+
+        currentWeatherData = data;
         
-        if(!response.ok){
+        if(Number(data.cod) !== 200){
             showError("city not found. Please check your spelling.");
             return;
         }
-        const data = await response.json();
-        console.log(data);
-        showWeather();
 
+        showWeather();
         inputValue.value = "";
 
-
-        const current = data.list[0];
-
-        const cityNameValue = data.city.name;
-        const temp = Math.round(current.main.temp);
-        const feelsLike = Math.round(current.main.feels_like);
-        const humidity = current.main.humidity;
-        const wind = current.wind.speed;
-        const weatherType = current.weather[0].main;
-
-        const icon = weatherIcons[weatherType] || weatherIcons.Default;
-
-        weatherIcon.src = icon.src;
-        weatherIcon.alt = icon.alt;
-
-
-        cityName.textContent = cityNameValue;
-
-        const todayDate = new Date(current.dt_txt);
-        const formattedDate = todayDate.toLocaleDateString("en-US",{
-            weekday : "long",
-            month   : "short",
-            day     : "numeric",
-            year    : "numeric"
-        });
-        currentDate.textContent = formattedDate;
-
-        heroDegree.textContent = `${temp}°`;
-        metricValues[0].textContent = `${feelsLike}°`;
-        metricValues[1].textContent = `${humidity}%`;
-        metricValues[2].textContent = `${wind} m/s`;
+        renderWeather(data);
         
-        updateHourlyForecast(data.list);
-        updateDailyForecast(data.list);
-
     } catch (error) {
         console.log(error);
         showError("Network Error. Please check your internet connection");
     } finally{
-        searchBtn.disabled = false;
-        searchBtn.textContent = "Search";
-        inputValue.readOnly = false;
+        setLoading(false);
     }
 
 }
 
 function searchWeather(){
+
+    if(searchBtn.disabled)
+        return;
+
     const searchCity = inputValue.value.trim();
     if(searchCity === ""){
         showEmptyState();
@@ -294,3 +382,46 @@ inputValue.addEventListener("keydown", e =>{
         searchWeather();
     }
 });
+
+unitsBtn.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    unitsMenu.classList.toggle("hidden");
+
+    unitsBtn.classList.toggle("open");
+
+    unitOptions.forEach(option => {
+
+    option.addEventListener("click", () => {
+
+        currentUnit = option.dataset.unit;
+
+        unitOptions.forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        option.classList.add("active");
+
+        unitsMenu.classList.add("hidden");
+
+        unitsBtn.classList.remove("open");
+
+        if(currentWeatherData){
+            renderWeather(currentWeatherData);
+        }
+    });
+});
+
+});
+
+document.addEventListener("click", () => {
+
+    unitsMenu.classList.add("hidden");
+
+    unitsBtn.classList.remove("open");
+
+});
+
+getCurrentLocation();
+showEmptyState();
