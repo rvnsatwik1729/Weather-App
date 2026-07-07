@@ -76,7 +76,7 @@ function showError(message){
     weatherContainer.classList.add("hidden");
     errorMessage.classList.remove("hidden");
 
-    errorMessage.textContent =message;
+    errorMessage.textContent = message;
 }
 
 showEmptyState();
@@ -130,10 +130,87 @@ function updateHourlyForecast(hourlyData) {
 
 }
 
-function updateDailyForecast(data){
+function updateDailyForecast(forecastData) {
+
     dailyForecast.innerHTML = "";
-    
-    
+
+    const dailyData = {};
+
+    // Calculate max/min temperature for each day
+    for (const forecast of forecastData) {
+
+        const date = forecast.dt_txt.split(" ")[0];
+
+        if (!dailyData[date]) {
+
+            dailyData[date] = {
+                max: forecast.main.temp_max,
+                min: forecast.main.temp_min,
+                weather: forecast.weather[0].main
+            };
+
+        } else {
+
+            dailyData[date].max = Math.max(
+                dailyData[date].max,
+                forecast.main.temp_max
+            );
+
+            dailyData[date].min = Math.min(
+                dailyData[date].min,
+                forecast.main.temp_min
+            );
+
+        }
+    }
+
+    // Take only first 5 days
+    const dates = Object.keys(dailyData).slice(0, 5);
+
+    for (const date of dates) {
+
+        const dayData = dailyData[date];
+
+        const day = new Date(date).toLocaleDateString("en-US", {
+            weekday: "short"
+        });
+
+        const maxTemp = Math.round(dayData.max);
+        const minTemp = Math.round(dayData.min);
+
+        const icon = weatherIcons[dayData.weather] || weatherIcons.Default;
+
+        const dayCard = document.createElement("div");
+        dayCard.classList.add("day-card");
+
+        const dayName = document.createElement("span");
+        dayName.classList.add("day-name");
+        dayName.textContent = day;
+
+        const img = document.createElement("img");
+        img.src = icon.src;
+        img.alt = icon.alt;
+
+        const dayTemps = document.createElement("span");
+        dayTemps.classList.add("day-temps");
+
+        const tempMax = document.createElement("span");
+        tempMax.classList.add("max-temp");
+        tempMax.textContent = `${maxTemp}°`;
+
+        const tempMin = document.createElement("span");
+        tempMin.classList.add("min-temp");
+        tempMin.textContent = `${minTemp}°`;
+
+        dayTemps.appendChild(tempMax);
+        dayTemps.appendChild(tempMin);
+
+        dayCard.appendChild(dayName);
+        dayCard.appendChild(img);
+        dayCard.appendChild(dayTemps);
+
+        dailyForecast.appendChild(dayCard);
+    }
 }
 
 async function displayWeather(city){
@@ -147,7 +224,7 @@ async function displayWeather(city){
         const response = await fetch(url);
         
         if(!response.ok){
-            showError("city not found");
+            showError("city not found. Please check your spelling.");
             return;
         }
         const data = await response.json();
@@ -173,13 +250,23 @@ async function displayWeather(city){
 
 
         cityName.textContent = cityNameValue;
-        currentDate.textContent = Date.now();
+
+        const todayDate = new Date(current.dt_txt);
+        const formattedDate = todayDate.toLocaleDateString("en-US",{
+            weekday : "long",
+            month   : "short",
+            day     : "numeric",
+            year    : "numeric"
+        });
+        currentDate.textContent = formattedDate;
+
         heroDegree.textContent = `${temp}°`;
         metricValues[0].textContent = `${feelsLike}°`;
         metricValues[1].textContent = `${humidity}%`;
-        metricValues[2].textContent = `${wind} km/h`;
+        metricValues[2].textContent = `${wind} m/s`;
         
         updateHourlyForecast(data.list);
+        updateDailyForecast(data.list);
 
     } catch (error) {
         console.log(error);
@@ -192,22 +279,18 @@ async function displayWeather(city){
 
 }
 
-searchBtn.addEventListener("click",()=>{
+function searchWeather(){
     const searchCity = inputValue.value.trim();
     if(searchCity === ""){
         showEmptyState();
         return;
     }
     displayWeather(searchCity);
-});
+}
+searchBtn.addEventListener("click",(searchWeather));
 
 inputValue.addEventListener("keydown", e =>{
     if(e.key === "Enter"){
-        const searchCity = inputValue.value.trim();
-        if(searchCity === ""){
-            showEmptyState();
-            return;
-        }
-        displayWeather(searchCity);
+        searchWeather();
     }
 });
