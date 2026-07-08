@@ -5,6 +5,7 @@ const errorMessage = document.querySelector(".error-message");
 const inputValue = document.getElementById("location-input");
 const searchBtn = document.querySelector(".search-submit-btn");
 
+const heroCard = document.querySelector(".hero-weather-card");
 const cityName = document.querySelector(".city-name");
 const currentDate = document.querySelector(".current-date");
 
@@ -21,6 +22,11 @@ const dailyForecast = document.querySelector(".daily-forecast-row");
 const unitsBtn = document.querySelector(".units-btn");
 const unitsMenu = document.querySelector(".units-menu");
 const unitOptions = document.querySelectorAll(".unit-option");
+const unitsBtnSpan = document.querySelector(".units-btn span");
+
+const dayDropdownBtn = document.querySelector(".day-dropdown-btn");
+const selectedDay = dayDropdownBtn.querySelector("span");
+const dayMenu=document.querySelector(".day-menu");
 
 const API_KEY = "c7e67f5fa6b67bccb1be809e832dc9c5";
 
@@ -66,6 +72,36 @@ const weatherIcons = {
         }
     };
 
+const heroGradients = {
+    Clear:"linear-gradient(135deg,#4facfe,#00f2fe)",
+
+    Clouds: "linear-gradient(135deg,#667db6,#8798b7)",
+
+    Rain: "linear-gradient(135deg,#434343,#000000)",
+
+    Thunderstorm: "linear-gradient(135deg,#232526,#414345)",
+
+    Snow: "linear-gradient(135deg,#dfe9f3,#ffffff)",
+
+    Mist: "linear-gradient(135deg,#757f9a,#d7dde8)",
+
+    Default: "linear-gradient(135deg,#2b49c7,#1c2da0)"
+};
+
+function getWindDirection(deg){
+    const directions = [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+    ];
+    return directions[Math.round(deg / 45) % 8];
+}
+
 function showEmptyState(){
     emptyState.classList.remove("hidden");
     weatherContainer.classList.add("hidden");
@@ -95,7 +131,7 @@ function setLoading(isLoading){
 
 function convertTemperature(temp){
     if(currentUnit === "metric"){
-        return `${Math.round(temp)}°C`;
+        return `${Math.round(temp)}°`;
     }
 
     return `${Math.round((temp * 9/5) + 32)}F`;
@@ -109,6 +145,63 @@ function convertWind(speed){
     return `${Math.round(speed*2.237)} mph`;
 }
 
+function createDayMenu(forecastData){
+
+    const dayMenu=document.querySelector(".day-menu");
+
+    dayMenu.innerHTML="";
+
+    const days={};
+
+    for(const forecast of forecastData){
+
+        const date=forecast.dt_txt.split(" ")[0];
+
+        if(!days[date]){
+
+            days[date]=[];
+
+        }
+
+        days[date].push(forecast);
+
+    }
+
+    const dates=Object.keys(days);
+
+    dates.forEach(date=>{
+
+        const button=document.createElement("button");
+
+        button.classList.add("day-option");
+
+        button.textContent=new Date(date).toLocaleDateString("en-US",{
+            weekday:"long"
+        });
+
+        button.addEventListener("click",()=>{
+
+            selectedDay.textContent=button.textContent;
+
+            updateHourlyForecast(days[date]);
+
+            dayMenu.classList.add("hidden");
+
+        });
+
+        dayMenu.appendChild(button);
+
+    });
+
+    selectedDay.textContent =
+        new Date(dates[0]).toLocaleDateString("en-US",{
+            weekday:"long"
+        });
+
+    updateHourlyForecast(days[dates[0]]);
+
+}
+
 function renderWeather(data){
     const current = data.list[0];
 
@@ -117,14 +210,30 @@ function renderWeather(data){
         const feelsLike = current.main.feels_like;
         const humidity = current.main.humidity;
         const wind = current.wind.speed;
+        const windDirection = getWindDirection(current.wind.deg);
         const weatherType = current.weather[0].main;
+        const precipitation = current.rain?.["3h"] ?? 0;
+        const sunrise = new Date(data.city.sunrise * 1000);
+        const sunset = new Date(data.city.sunset * 1000);
+
+        const sunriseTime = sunrise.toLocaleTimeString([],{
+            hour:"numeric",
+            minute:"2-digit",
+            hour12:true
+        });
+
+        const sunsetTime = sunset.toLocaleTimeString([],{
+            hour:"numeric",
+            minute:"2-digit",
+            hour12:true
+        });
 
         const icon = weatherIcons[weatherType] || weatherIcons.Default;
 
         weatherIcon.src = icon.src;
         weatherIcon.alt = icon.alt;
 
-
+        heroCard.style.background = heroGradients[weatherType] || heroGradients.Default;
         cityName.textContent = cityNameValue;
 
         const todayDate = new Date(current.dt_txt);
@@ -139,11 +248,14 @@ function renderWeather(data){
         heroDegree.textContent = `${convertTemperature(temp)}`;
         metricValues[0].textContent = `${convertTemperature(feelsLike)}`;
         metricValues[1].textContent = `${humidity}%`;
-        metricValues[2].textContent = `${convertWind(wind)}`;
+        metricValues[2].textContent = `${convertWind(wind)}  ${windDirection}`;
+        metricValues[3].textContent = `${precipitation} mm`;
+        metricValues[4].textContent = sunriseTime;
+        metricValues[5].textContent = sunsetTime;
         
         updateHourlyForecast(data.list);
         updateDailyForecast(data.list);
-
+        createDayMenu(data.list);
 }
 
 function getCurrentLocation(){
@@ -391,11 +503,15 @@ unitsBtn.addEventListener("click", (e) => {
 
     unitsBtn.classList.toggle("open");
 
-    unitOptions.forEach(option => {
+});
+
+unitOptions.forEach(option => {
 
     option.addEventListener("click", () => {
 
         currentUnit = option.dataset.unit;
+
+        unitsBtnSpan.textContent = currentUnit === "metric" ? "Units : °C" : "Units : F";
 
         unitOptions.forEach(btn =>
             btn.classList.remove("active")
@@ -413,15 +529,19 @@ unitsBtn.addEventListener("click", (e) => {
     });
 });
 
-});
-
 document.addEventListener("click", () => {
 
     unitsMenu.classList.add("hidden");
-
     unitsBtn.classList.remove("open");
+
+    dayMenu.classList.add("hidden");
 
 });
 
-getCurrentLocation();
+dayDropdownBtn.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    dayMenu.classList.toggle("hidden");
+});
+
 showEmptyState();
+getCurrentLocation();

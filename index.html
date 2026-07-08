@@ -26,27 +26,30 @@
           <h2>Weather Flex</h2>
         </div>
         <div class="unit-selector">
-
           <button class="units-btn">
             <img src="images/icon-units.svg" alt="" width="16" height="16" />
             <span>units</span>
-            <img src="images/icon-dropdown.svg" alt="" class="arrow" width="10" height="10" />
+            <img
+              src="images/icon-dropdown.svg"
+              alt=""
+              class="arrow"
+              width="10"
+              height="10"
+            />
           </button>
 
           <div class="units-menu hidden">
-          <button class="unit-option active" data-unit= "metric">
-            Celsius(°C)
-          </button>
-          <button class="unit-option" data-unit="imperial">
-            Faranheit(F)
-          </button>
-        </div>
-
+            <button class="unit-option active" data-unit="metric">
+              Celsius(°C)
+            </button>
+            <button class="unit-option" data-unit="imperial">
+              Faranheit(F)
+            </button>
+          </div>
         </div>
       </header>
 
       <main class="main-content">
-
         <section class="search-section">
           <h1>How's the sky looking today?</h1>
           <div class="search-bar-container">
@@ -104,33 +107,41 @@
                   <span class="metric-label">Precipitation</span>
                   <span class="metric-value">0 mm</span>
                 </div>
+                <div class="metric-card">
+                  <span class="metric-label">Sunrise</span>
+                  <span class="metric-value">6:02 AM</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">Sunset</span>
+                  <span class="metric-value">6:54 PM</span>
+                </div>
               </div>
 
               <div class="daily-forecast-section">
                 <h3>Daily forecast</h3>
-                <div class="daily-forecast-row" id="daily-forecast">
-
-                </div>
+                <div class="daily-forecast-row" id="daily-forecast"></div>
               </div>
             </div>
 
             <div class="right-panel">
               <div class="hourly-header">
                 <h3>Hourly forecast</h3>
-                <button class="day-dropdown-btn">
-                  Tuesday
-                  <img
-                    src="images/icon-dropdown.svg"
-                    alt=""
-                    width="10"
-                    height="10"
-                  />
-                </button>
+                <div class="day-selector">
+                  <button class="day-dropdown-btn">
+                    <span>Select Day</span>
+
+                    <img
+                      src="images/icon-dropdown.svg"
+                      width="10"
+                      height="10"
+                    />
+                  </button>
+
+                  <div class="day-menu hidden"></div>
+                </div>
               </div>
 
-              <div class="hourly-list">
-                
-              </div>
+              <div class="hourly-list"></div>
             </div>
           </div>
         </div>
@@ -139,10 +150,7 @@
           <h2>Search for a city to see the weather</h2>
         </div>
 
-        <div class="error-message hidden">
-          
-        </div>
-
+        <div class="error-message hidden"></div>
       </main>
     </div>
 
